@@ -82,8 +82,13 @@ A few environment variables are set so scripts don't need to discover things.
    e.g. `platform/tools/repohooks`
 * `REPO_PATH`: The path to the project relative to the root.
    e.g. `tools/repohooks`
-* `REPO_REMOTE`: The remote git URL.
-   e.g. `https://android.googlesource.com/platform/tools/repohooks`
+* `REPO_REMOTE`: The name of the git remote.
+   e.g. `aosp`.
+* `REPO_LREV`: The name of the remote revision, translated to a local tracking
+   branch. This is typically latest commit in the remote-tracking branch.
+   e.g. `ec044d3e9b608ce275f02092f86810a3ba13834e`
+* `REPO_RREV`: The remote revision.
+   e.g. `master`
 * `PREUPLOAD_COMMIT`: The commit that is currently being checked.
    e.g. `1f89dce0468448fa36f632d2fc52175cd6940a91`
 
@@ -143,6 +148,8 @@ canned hooks already included geared towards AOSP style guidelines.
 * `commit_msg_test_field`: Require a `Test:` line.
 * `cpplint`: Run through the cpplint tool (for C++ code).
 * `gofmt`: Run Go code through `gofmt`.
+* `google_java_format`: Run Java code through
+  [`google-java-format`](https://github.com/google/google-java-format)
 * `jsonlint`: Verify JSON code is sane.
 * `pylint`: Run Python code through `pylint`.
 * `xmllint`: Run XML code through `xmllint`.
@@ -188,6 +195,8 @@ distros/versions.  The following tools are recognized:
 * `cpplint`: used for the `cpplint` builtin hook.
 * `git-clang-format`: used for the `clang_format` builtin hook.
 * `gofmt`: used for the `gofmt` builtin hook.
+* `google-java-format`: used for the `google_java_format` builtin hook.
+* `google-java-format-diff`: used for the `google_java_format` builtin hook.
 * `pylint`: used for the `pylint` builtin hook.
 
 See [Placeholders](#Placeholders) for variables you can expand automatically.
