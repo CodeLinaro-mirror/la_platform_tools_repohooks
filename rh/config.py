@@ -78,7 +78,7 @@ class RawConfigParser(configparser.RawConfigParser):
             # Python 3 compat logic.  Return a dict of section-to-options.
             if sys.version_info.major < 3:
                 return [(x, self.items(x)) for x in self.sections()]
-            return super(RawConfigParser, self).items()
+            return super().items()
 
         try:
             return configparser.RawConfigParser.items(self, section)
@@ -234,7 +234,7 @@ class PreUploadConfig(object):
                 self.custom_hook(hook)
             except ValueError as e:
                 raise ValidationError('%s: hook "%s" command line is invalid: '
-                                      '%s' % (self.source, hook, e))
+                                      '%s' % (self.source, hook, e)) from e
 
         # Verify hook options are valid shell strings.
         for hook in self.builtin_hooks:
@@ -242,7 +242,7 @@ class PreUploadConfig(object):
                 self.builtin_hook_option(hook)
             except ValueError as e:
                 raise ValidationError('%s: hook options "%s" are invalid: %s' %
-                                      (self.source, hook, e))
+                                      (self.source, hook, e)) from e
 
         # Reject unknown tools.
         valid_tools = set(rh.hooks.TOOL_PATHS.keys())
@@ -279,13 +279,13 @@ class PreUploadFile(PreUploadConfig):
         Args:
           path: The config file to load.
         """
-        super(PreUploadFile, self).__init__(source=path)
+        super().__init__(source=path)
 
         self.path = path
         try:
             self.config.read(path)
         except configparser.ParsingError as e:
-            raise ValidationError('%s: %s' % (path, e))
+            raise ValidationError('%s: %s' % (path, e)) from e
 
         self._validate()
 
@@ -310,7 +310,7 @@ class LocalPreUploadFile(PreUploadFile):
     FILENAME = 'PREUPLOAD.cfg'
 
     def _validate(self):
-        super(LocalPreUploadFile, self)._validate()
+        super()._validate()
 
         # Reject Exclude Paths section for local config.
         if self.config.has_section(self.BUILTIN_HOOKS_EXCLUDE_SECTION):
@@ -340,7 +340,7 @@ class PreUploadSettings(PreUploadConfig):
           paths: The directories to look for config files.
           global_paths: The directories to look for global config files.
         """
-        super(PreUploadSettings, self).__init__()
+        super().__init__()
 
         self.paths = []
         for config in itertools.chain(
